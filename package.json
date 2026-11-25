@@ -1,0 +1,19 @@
+{
+  "name": "html-boilerplate-generator",
+  "version": "1.0.0",
+  "description": "Free, private HTML5 boilerplate generator with sensible defaults for headings, focus rings, and reduced motion. Runs in your browser or terminal.",
+  "license": "MIT",
+  "author": "Patch Bandit (https://patchbandit.com)",
+  "type": "module",
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "exports": {
+    ".": "./src/core/index.ts"
+  },
+  "scripts": {
+    "build:web": "node scripts/build-web.mjs",
+    "test": "node --test tests/boilerplate.test.ts tests/cli.test.ts tests/hygiene.test.ts",
+    "cli": "node src/cli.ts"
+  }
+}

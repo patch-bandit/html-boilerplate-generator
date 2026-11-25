@@ -1,0 +1,18 @@
+Third-Party Credits and Design References
+
+This project has no runtime npm dependencies. Its HTML5 document structure and
+optional classless CSS defaults draw design inspiration from the following
+MIT-licensed open-source projects:
+
+- HTML5 Boilerplate (h5bp/html5-boilerplate): MIT License
+  Copyright (c) HTML5 Boilerplate
+  https://github.com/h5bp/html5-boilerplate
+  Referenced for modern <head> tag ordering and essential metadata conventions.
+
+- Simple.css (kevquirk/simple.css): MIT License
+  Copyright (c) 2020 Simple.css (Kev Quirk)
+  https://github.com/kevquirk/simple.css
+  Referenced for the compact classless semantic stylesheet pattern.
+
+All source files in this repository are original implementations written for
+Patch Bandit and released under the MIT License (see LICENSE).

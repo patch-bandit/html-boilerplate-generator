@@ -1,0 +1,911 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HTML Boilerplate Generator | Patch Bandit</title>
+    <meta name="description" content="Free offline HTML boilerplate generator for one clean HTML5 starter page with focus rings and reduced motion.">
+    <meta name="color-scheme" content="dark light">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; frame-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'">
+    <style>
+      :root {
+        --bg: #0e0619;
+        --surface: #241539;
+        --surface-2: #1a0d2b;
+        --ink: #fff2de;
+        --muted: #d2cae2;
+        --accent: #86e3be;
+        --accent-ink: #140a22;
+        --line: #4b2d6e;
+        --gold: #ffc857;
+        --warn-bg: #3b1d2e;
+        --warn-ink: #ffd1dc;
+        --warn-line: #ff7b9c;
+      }
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg: #fbf4ea;
+          --surface: #ffffff;
+          --surface-2: #f4ecf7;
+          --ink: #1e1033;
+          --muted: #4a3c63;
+          --accent: #0f6b4c;
+          --accent-ink: #ffffff;
+          --line: #b7a9c8;
+          --gold: #7a2b8f;
+          --warn-bg: #fff1f2;
+          --warn-ink: #881337;
+          --warn-line: #be123c;
+        }
+      }
+      *, *::before, *::after { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        line-height: 1.55;
+      }
+      .wrap { width: min(100% - 2rem, 72rem); margin-inline: auto; padding: 2rem 0 3rem; }
+      h1 { margin: 0 0 0.5rem; font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.15; }
+      .lead { margin: 0 0 1.5rem; color: var(--muted); max-width: 66ch; }
+      .grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
+      @media (min-width: 58rem) {
+        .grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); }
+      }
+      .card { background: var(--surface); border: 1.5px solid var(--line); border-radius: 14px; padding: 1.25rem; display: flex; flex-direction: column; gap: 0.9rem; min-width: 0; }
+      .row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.75rem; }
+      @media (min-width: 30rem) {
+        .row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      }
+      label { display: flex; flex-direction: column; gap: 0.3rem; font-weight: 600; font-size: 0.9rem; }
+      .chk { flex-direction: row; align-items: center; gap: 0.5rem; font-weight: 500; cursor: pointer; }
+      input[type="text"], input[type="url"], select, textarea {
+        font: 500 0.92rem/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        color: var(--ink);
+        background: var(--surface-2);
+        border: 1.5px solid var(--line);
+        border-radius: 8px;
+        padding: 0.55rem 0.7rem;
+        width: 100%;
+      }
+      textarea { min-height: 24rem; resize: vertical; white-space: pre; overflow-x: auto; flex: 1; }
+      :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+      .actions { display: flex; flex-wrap: wrap; gap: 0.55rem; align-items: center; }
+      button {
+        font: 700 0.88rem/1 system-ui, sans-serif;
+        color: var(--ink);
+        background: var(--surface-2);
+        border: 1.5px solid var(--line);
+        border-radius: 999px;
+        padding: 0.55rem 0.95rem;
+        min-height: 2.4rem;
+        cursor: pointer;
+      }
+      button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+      button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+      iframe { width: 100%; min-height: 24rem; border: 1.5px solid var(--line); border-radius: 10px; background: #ffffff; flex: 1; }
+      .warn {
+        margin: 0;
+        padding: 0.65rem 0.85rem;
+        border-radius: 10px;
+        border: 1.5px solid var(--warn-line);
+        background: var(--warn-bg);
+        color: var(--warn-ink);
+        font-size: 0.88rem;
+      }
+      .status { margin: 0; font-size: 0.88rem; color: var(--muted); }
+      .skip { position: absolute; left: 1rem; top: -4rem; background: var(--accent); color: var(--accent-ink); padding: 0.5rem 0.9rem; border-radius: 6px; font-weight: 700; text-decoration: none; }
+      .skip:focus { top: 0.75rem; }
+      [hidden] { display: none !important; }
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { animation: none !important; transition: none !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <main id="main" class="wrap">
+      <h1>HTML boilerplate generator</h1>
+      <p class="lead">Offline standalone page. Build one clean HTML5 starter with headings, focus rings, reduced motion, and optional Open Graph tags. Nothing leaves this tab.</p>
+
+      <div class="grid">
+        <section class="card" aria-label="Page options">
+          <div class="actions" role="group" aria-label="Starter presets">
+            <button type="button" data-preset="clean" aria-pressed="true">Clean starter</button>
+            <button type="button" data-preset="minimal" aria-pressed="false">Minimal shell</button>
+            <button type="button" data-preset="article" aria-pressed="false">Share-ready article</button>
+          </div>
+
+          <label>Page title <input id="f-title" type="text" maxlength="140" value="My new page"></label>
+          <label>Meta description <input id="f-desc" type="text" maxlength="300" value="A clean HTML5 starter page with sensible defaults for headings, focus, and motion."></label>
+
+          <div class="row">
+            <label>Language (lang) <input id="f-lang" type="text" maxlength="35" value="en"></label>
+            <label>Accent hex <input id="f-accent" type="text" maxlength="7" spellcheck="false" value="#2563eb"></label>
+          </div>
+
+          <div class="row">
+            <label>Starter CSS
+              <select id="f-css">
+                <option value="inline-base" selected>Inline baseline</option>
+                <option value="inline-classless">Inline classless</option>
+                <option value="linked">External link</option>
+                <option value="none">No CSS</option>
+              </select>
+            </label>
+            <label>JavaScript tag
+              <select id="f-script">
+                <option value="none" selected>No script</option>
+                <option value="defer">Deferred script</option>
+                <option value="module">ES module</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="row">
+            <label class="chk"><input id="f-viewport" type="checkbox" checked> Viewport meta</label>
+            <label class="chk"><input id="f-favicon" type="checkbox" checked> Inline SVG favicon</label>
+            <label class="chk"><input id="f-skip" type="checkbox" checked> Skip-to-content link</label>
+            <label class="chk"><input id="f-landmarks" type="checkbox" checked> Semantic landmarks</label>
+            <label class="chk"><input id="f-canonical" type="checkbox"> Canonical link</label>
+            <label class="chk"><input id="f-og" type="checkbox"> Open Graph tags</label>
+            <label class="chk"><input id="f-article" type="checkbox"> Article wrapper</label>
+            <label class="chk"><input id="f-comments" type="checkbox"> Section comments</label>
+          </div>
+
+          <div class="row">
+            <label>Indentation
+              <select id="f-indent">
+                <option value="2" selected>2 spaces</option>
+                <option value="4">4 spaces</option>
+                <option value="tab">Tabs</option>
+              </select>
+            </label>
+            <label id="url-row" hidden>Page URL (https://...) <input id="f-url" type="url" value="https://example.com/"></label>
+          </div>
+        </section>
+
+        <section class="card" aria-label="Generated output">
+          <div class="actions">
+            <button type="button" data-view="code" aria-pressed="true">Code</button>
+            <button type="button" data-view="preview" aria-pressed="false">Live preview</button>
+            <button type="button" class="primary" id="btn-copy">Copy HTML</button>
+            <button type="button" id="btn-dl">Download index.html</button>
+          </div>
+          <p class="warn" id="warn" hidden></p>
+          <textarea id="out-code" readonly spellcheck="false" aria-label="Starter HTML code"></textarea>
+          <iframe id="out-preview" sandbox="" title="Sandboxed preview" hidden></iframe>
+          <p class="status" id="status" role="status" aria-live="polite">Ready.</p>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      (function () {
+      // BEGIN GENERATED CORE (src/core/boilerplate.ts)
+      // Generated via `npm run build:web`. Do not edit this block by hand.
+      const core = (function () {
+        // Clean, accessible HTML5 boilerplate generator.
+        // Browser-only, zero runtime dependencies, strict HTML/attribute escaping and URL/color checks.
+
+        const QUICK_LANGS = ['en', 'es', 'fr', 'de', 'ja'];
+        const DEFAULT_ACCENT = '#2563eb';
+        const LIGHT_BG = '#ffffff';
+        const DARK_BG = '#11131a';
+        const DEFAULT_STYLESHEET = 'styles.css';
+        const DEFAULT_SCRIPT = 'app.js';
+
+        const DEFAULT_OPTIONS                     = {
+          title: 'My new page',
+          description: 'A clean HTML5 starter page with sensible defaults for headings, focus, and motion.',
+          lang: 'en',
+          author: '',
+          canonicalUrl: 'https://example.com/',
+          ogImageUrl: '',
+          accentColor: DEFAULT_ACCENT,
+          includeViewport: true,
+          includeColorScheme: true,
+          includeThemeColor: true,
+          includeFavicon: true,
+          includeCanonical: false,
+          includeOpenGraph: false,
+          includeSkipLink: true,
+          includeLandmarks: true,
+          includeArticleWrapper: false,
+          includeComments: false,
+          cssMode: 'inline-base',
+          stylesheetHref: DEFAULT_STYLESHEET,
+          scriptMode: 'none',
+          scriptSrc: DEFAULT_SCRIPT,
+          indent: '2',
+        };
+
+        const PRESETS                     = [
+          {
+            id: 'clean',
+            label: 'Clean starter',
+            summary: 'Headings, focus, motion',
+            options: { ...DEFAULT_OPTIONS },
+          },
+          {
+            id: 'minimal',
+            label: 'Minimal shell',
+            summary: 'Bare HTML5 document',
+            options: {
+              ...DEFAULT_OPTIONS,
+              description: '',
+              includeColorScheme: false,
+              includeThemeColor: false,
+              includeFavicon: false,
+              includeCanonical: false,
+              includeOpenGraph: false,
+              includeSkipLink: false,
+              includeLandmarks: false,
+              includeArticleWrapper: false,
+              cssMode: 'none',
+              scriptMode: 'none',
+            },
+          },
+          {
+            id: 'article',
+            label: 'Share-ready article',
+            summary: 'OG tags + classless CSS',
+            options: {
+              ...DEFAULT_OPTIONS,
+              title: 'Notes from the workbench',
+              description: 'An accessible article starter with Open Graph metadata and self-contained semantic CSS.',
+              canonicalUrl: 'https://example.com/notes/',
+              includeCanonical: true,
+              includeOpenGraph: true,
+              includeSkipLink: true,
+              includeLandmarks: true,
+              includeArticleWrapper: true,
+              cssMode: 'inline-classless',
+            },
+          },
+        ];
+
+        function getPresetOptions(id          )                     {
+          const found = PRESETS.find((p) => p.id === id);
+          return found ? { ...found.options } : { ...DEFAULT_OPTIONS };
+        }
+
+        function escapeHtml(raw        )         {
+          return raw
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+        }
+
+        function sanitizeSingleLine(raw        , maxLen = 240)         {
+          return raw
+            .replace(/[\u0000-\u001f\u007f]+/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim()
+            .slice(0, maxLen);
+        }
+
+        function sanitizeLang(raw        )         {
+          const cleaned = raw
+            .trim()
+            .replace(/[^A-Za-z0-9-]/g, '')
+            .replace(/^-+|-+$/g, '')
+            .replace(/-{2,}/g, '-')
+            .slice(0, 35);
+          return cleaned || 'en';
+        }
+
+        function sanitizeHexColor(raw        , fallback = DEFAULT_ACCENT)                                    {
+          const trimmed = raw.trim();
+          const six = /^#([0-9a-fA-F]{6})$/.exec(trimmed);
+          if (six) return { color: `#${six[1].toLowerCase()}`, valid: true };
+          const three = /^#([0-9a-fA-F]{3})$/.exec(trimmed);
+          if (three) {
+            const [r, g, b] = three[1].toLowerCase().split('');
+            return { color: `#${r}${r}${g}${g}${b}${b}`, valid: true };
+          }
+          return { color: fallback, valid: false };
+        }
+
+        function sanitizeHttpUrl(raw        )                                  {
+          const trimmed = raw.trim();
+          if (!trimmed) return { url: '', valid: true };
+          if (/[\u0000-\u0020"'<>]/.test(trimmed)) return { url: '', valid: false };
+          try {
+            const parsed = new URL(trimmed);
+            if (parsed.protocol === 'https:' || parsed.protocol === 'http:') {
+              return { url: parsed.href, valid: true };
+            }
+            return { url: '', valid: false };
+          } catch {
+            return { url: '', valid: false };
+          }
+        }
+
+        function sanitizeAssetPath(raw        , fallback        )                                                      {
+          const trimmed = raw.trim();
+          if (!trimmed) return { path: fallback, valid: true, external: false };
+          if (/[\u0000-\u0020"'<>\\]/.test(trimmed)) return { path: fallback, valid: false, external: false };
+          if (/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(trimmed)) {
+            const checked = sanitizeHttpUrl(trimmed);
+            if (checked.valid && checked.url) {
+              return { path: checked.url, valid: true, external: true };
+            }
+            return { path: fallback, valid: false, external: false };
+          }
+          if (trimmed.startsWith('//')) {
+            return { path: fallback, valid: false, external: false };
+          }
+          return { path: trimmed.slice(0, 180), valid: true, external: false };
+        }
+
+        function hexToRgb(hex        )                           {
+          const safe = sanitizeHexColor(hex, DEFAULT_ACCENT).color;
+          const num = parseInt(safe.slice(1), 16);
+          return [(num >> 16) & 255, (num >> 8) & 255, num & 255];
+        }
+
+        function relativeLuminance(hex        )         {
+          const [r, g, b] = hexToRgb(hex).map((v) => {
+            const s = v / 255;
+            return s <= 0.04045 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+          });
+          return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+        }
+
+        function contrastRatio(hexA        , hexB        )         {
+          const l1 = relativeLuminance(hexA);
+          const l2 = relativeLuminance(hexB);
+          return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+        }
+
+        function getDarkAccentText(accent        )         {
+          const safe = sanitizeHexColor(accent, DEFAULT_ACCENT).color;
+          if (contrastRatio(safe, DARK_BG) >= 4.5) return safe;
+          const [r, g, b] = hexToRgb(safe);
+          for (let step = 1; step <= 50; step += 1) {
+            const t = step / 50;
+            const nr = Math.round(r + (255 - r) * t);
+            const ng = Math.round(g + (255 - g) * t);
+            const nb = Math.round(b + (255 - b) * t);
+            const candidate = `#${[nr, ng, nb].map((v) => v.toString(16).padStart(2, '0')).join('')}`;
+            if (contrastRatio(candidate, DARK_BG) >= 6.0) {
+              return candidate;
+            }
+          }
+          return '#ffffff';
+        }
+
+        function isPlaceholderHost(url        )          {
+          try {
+            const host = new URL(url).hostname.toLowerCase();
+            return host === 'example.com' || host.endsWith('.example.com');
+          } catch {
+            return false;
+          }
+        }
+
+        function buildFaviconDataUri(title        , accentColor        )         {
+          const match = /[A-Za-z0-9]/.exec(title);
+          const initial = (match ? match[0] : 'H').toUpperCase();
+          const safeColor = sanitizeHexColor(accentColor).color;
+          const encodedColor = safeColor.replace('#', '%23');
+          return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='${encodedColor}'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='system-ui,sans-serif' font-size='34' font-weight='700' fill='%23ffffff'%3E${initial}%3C/text%3E%3C/svg%3E`;
+        }
+
+        function getIndentUnit(mode            )         {
+          if (mode === '4') return '    ';
+          if (mode === 'tab') return '\t';
+          return '  ';
+        }
+
+        function buildBaselineCss(accent        , includeSkipLink         , pad        )           {
+          const p2 = pad + pad;
+          const darkAccent = getDarkAccentText(accent);
+          const lines = [
+            ':root {',
+            `${pad}color-scheme: light dark;`,
+            `${pad}--accent: ${accent};`,
+            `${pad}--accent-text: ${accent};`,
+            `${pad}--bg: ${LIGHT_BG};`,
+            `${pad}--fg: #18181b;`,
+            `${pad}--muted: #52525b;`,
+            `${pad}--line: #d4d4d8;`,
+            '}',
+            '@media (prefers-color-scheme: dark) {',
+            `${pad}:root {`,
+            ...(darkAccent !== accent ? [`${p2}--accent-text: ${darkAccent};`] : []),
+            `${p2}--bg: ${DARK_BG};`,
+            `${p2}--fg: #f4f4f5;`,
+            `${p2}--muted: #a1a1aa;`,
+            `${p2}--line: #2e3240;`,
+            `${pad}}`,
+            '}',
+            '*, *::before, *::after { box-sizing: border-box; }',
+            'html { -webkit-text-size-adjust: 100%; }',
+            'body {',
+            `${pad}margin: 0;`,
+            `${pad}background: var(--bg);`,
+            `${pad}color: var(--fg);`,
+            `${pad}font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;`,
+            `${pad}font-size: 1.0625rem;`,
+            `${pad}line-height: 1.65;`,
+            '}',
+            'header, main, footer {',
+            `${pad}width: min(100% - 2rem, 48rem);`,
+            `${pad}margin-inline: auto;`,
+            '}',
+            'header { padding: 1.5rem 0 1rem; border-bottom: 1px solid var(--line); }',
+            'main { padding: 2rem 0; }',
+            'footer { padding: 1.25rem 0 2.5rem; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.92rem; }',
+            'h1, h2, h3 { line-height: 1.2; text-wrap: balance; margin-top: 0; }',
+            'p, li { max-width: 68ch; }',
+            'img, svg, video { max-width: 100%; height: auto; display: block; }',
+            'a { color: var(--accent-text); text-underline-offset: 0.2em; }',
+            ':focus-visible { outline: 3px solid var(--accent-text); outline-offset: 3px; border-radius: 3px; }',
+          ];
+
+          if (includeSkipLink) {
+            lines.push(
+              '.skip-link {',
+              `${pad}position: absolute;`,
+              `${pad}left: 1rem;`,
+              `${pad}top: -4rem;`,
+              `${pad}background: var(--fg);`,
+              `${pad}color: var(--bg);`,
+              `${pad}padding: 0.6rem 1rem;`,
+              `${pad}border-radius: 6px;`,
+              `${pad}font-weight: 600;`,
+              `${pad}text-decoration: none;`,
+              '}',
+              '.skip-link:focus { top: 0.75rem; }',
+            );
+          }
+
+          lines.push(
+            '@media (prefers-reduced-motion: reduce) {',
+            `${pad}*, *::before, *::after {`,
+            `${p2}animation-duration: 0.01ms !important;`,
+            `${p2}animation-iteration-count: 1 !important;`,
+            `${p2}transition-duration: 0.01ms !important;`,
+            `${p2}scroll-behavior: auto !important;`,
+            `${pad}}`,
+            '}',
+          );
+          return lines;
+        }
+
+        function buildClasslessCss(accent        , includeSkipLink         , pad        )           {
+          const lines = [
+            ...buildBaselineCss(accent, includeSkipLink, pad),
+            'nav ul { list-style: none; padding: 0; margin: 0.5rem 0 0; display: flex; flex-wrap: wrap; gap: 1rem; }',
+            'code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.9em; }',
+            'pre { overflow-x: auto; padding: 1rem; border-radius: 8px; border: 1px solid var(--line); }',
+            'blockquote { margin: 1.5rem 0; padding: 0.25rem 0 0.25rem 1rem; border-left: 4px solid var(--accent); color: var(--muted); }',
+            'button, input, textarea, select { font: inherit; color: inherit; }',
+            'button { padding: 0.55rem 1rem; border-radius: 8px; border: 1px solid var(--line); background: transparent; cursor: pointer; }',
+            'table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }',
+            'th, td { text-align: left; padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--line); }',
+            'hr { border: 0; border-top: 1px solid var(--line); margin: 2rem 0; }',
+          ];
+          return lines;
+        }
+
+        function renderDocument(
+          opts                    ,
+          accent        ,
+          canonicalUrl        ,
+          ogImageUrl        ,
+          stylesheetPath        ,
+          scriptPath        ,
+          forPreview         ,
+        )         {
+          const pad = getIndentUnit(opts.indent);
+          const p2 = pad + pad;
+          const p3 = p2 + pad;
+          const p4 = p3 + pad;
+          const titleText = sanitizeSingleLine(opts.title, 140) || 'My new page';
+          const descText = sanitizeSingleLine(opts.description, 300);
+          const authorText = sanitizeSingleLine(opts.author, 100);
+          const lang = sanitizeLang(opts.lang);
+
+          const lines           = [
+            '<!doctype html>',
+            `<html lang="${escapeHtml(lang)}">`,
+            `${pad}<head>`,
+            `${p2}<meta charset="utf-8">`,
+          ];
+
+          if (opts.includeViewport) {
+            lines.push(`${p2}<meta name="viewport" content="width=device-width, initial-scale=1">`);
+          }
+
+          lines.push(`${p2}<title>${escapeHtml(titleText)}</title>`);
+
+          if (descText) {
+            lines.push(`${p2}<meta name="description" content="${escapeHtml(descText)}">`);
+          }
+          if (authorText) {
+            lines.push(`${p2}<meta name="author" content="${escapeHtml(authorText)}">`);
+          }
+          if (opts.includeColorScheme) {
+            lines.push(`${p2}<meta name="color-scheme" content="light dark">`);
+          }
+          if (opts.includeThemeColor) {
+            lines.push(`${p2}<meta name="theme-color" content="${escapeHtml(accent)}">`);
+          }
+          if (opts.includeCanonical && canonicalUrl) {
+            lines.push(`${p2}<link rel="canonical" href="${escapeHtml(canonicalUrl)}">`);
+          }
+          if (opts.includeFavicon) {
+            const uri = buildFaviconDataUri(titleText, accent);
+            lines.push(`${p2}<link rel="icon" href="${uri}" type="image/svg+xml">`);
+          }
+
+          if (opts.includeOpenGraph) {
+            if (opts.includeComments) {
+              lines.push(`${p2}<!-- Social sharing metadata -->`);
+            }
+            lines.push(`${p2}<meta property="og:type" content="${opts.includeArticleWrapper ? 'article' : 'website'}">`);
+            lines.push(`${p2}<meta property="og:title" content="${escapeHtml(titleText)}">`);
+            if (descText) {
+              lines.push(`${p2}<meta property="og:description" content="${escapeHtml(descText)}">`);
+            }
+            if (canonicalUrl) {
+              lines.push(`${p2}<meta property="og:url" content="${escapeHtml(canonicalUrl)}">`);
+            }
+            if (ogImageUrl) {
+              lines.push(`${p2}<meta property="og:image" content="${escapeHtml(ogImageUrl)}">`);
+            }
+            lines.push(`${p2}<meta name="twitter:card" content="${ogImageUrl ? 'summary_large_image' : 'summary'}">`);
+          }
+
+          if (opts.cssMode === 'linked') {
+            if (!forPreview) {
+              if (opts.includeComments) {
+                lines.push(`${p2}<!-- External stylesheet -->`);
+              }
+              lines.push(`${p2}<link rel="stylesheet" href="${escapeHtml(stylesheetPath)}">`);
+            } else {
+              lines.push(`${p2}<style>body{font-family:system-ui,sans-serif;padding:1.25rem;line-height:1.6;} .pb-preview-note{font:500 0.85rem/1.4 ui-monospace,monospace;padding:0.6rem 0.8rem;border:1px dashed #6b7280;border-radius:6px;margin-bottom:1rem;}</style>`);
+            }
+          } else if (opts.cssMode === 'inline-base' || opts.cssMode === 'inline-classless') {
+            if (opts.includeComments) {
+              lines.push(`${p2}<!-- Accessible typography, focus ring, and reduced-motion defaults -->`);
+            }
+            lines.push(`${p2}<style>`);
+            const cssLines =
+              opts.cssMode === 'inline-classless'
+                ? buildClasslessCss(accent, opts.includeSkipLink, pad)
+                : buildBaselineCss(accent, opts.includeSkipLink, pad);
+            for (const cssLine of cssLines) {
+              lines.push(`${p3}${cssLine}`);
+            }
+            lines.push(`${p2}</style>`);
+          }
+
+          if (!forPreview && opts.scriptMode !== 'none') {
+            if (opts.includeComments) {
+              lines.push(`${p2}<!-- Deferred script avoids render blocking -->`);
+            }
+            if (opts.scriptMode === 'module') {
+              lines.push(`${p2}<script type="module" src="${escapeHtml(scriptPath)}"><\/script>`);
+            } else {
+              lines.push(`${p2}<script src="${escapeHtml(scriptPath)}" defer><\/script>`);
+            }
+          }
+
+          lines.push(`${pad}</head>`);
+          lines.push(`${pad}<body>`);
+
+          if (forPreview && opts.cssMode === 'linked') {
+            lines.push(`${p2}<p class="pb-preview-note">Preview note: external stylesheet (${escapeHtml(stylesheetPath)}) is omitted here so the preview makes no network calls.</p>`);
+          }
+
+          if (opts.includeSkipLink) {
+            lines.push(`${p2}<a class="skip-link" href="#main">Skip to content</a>`);
+          }
+
+          if (opts.includeLandmarks) {
+            if (opts.includeComments) {
+              lines.push(`${p2}<!-- Semantic landmarks for keyboard and screen-reader navigation -->`);
+            }
+            lines.push(`${p2}<header>`);
+            lines.push(`${p3}<p><strong>${escapeHtml(titleText)}</strong></p>`);
+            lines.push(`${p3}<nav aria-label="Primary">`);
+            lines.push(`${p4}<ul>`);
+            lines.push(`${p4}${pad}<li><a href="#main">Overview</a></li>`);
+            lines.push(`${p4}${pad}<li><a href="#details">Details</a></li>`);
+            lines.push(`${p4}</ul>`);
+            lines.push(`${p3}</nav>`);
+            lines.push(`${p2}</header>`);
+          }
+
+          lines.push(`${p2}<main id="main">`);
+          const innerPad = opts.includeArticleWrapper ? p4 : p3;
+          if (opts.includeArticleWrapper) {
+            lines.push(`${p3}<article>`);
+          }
+          lines.push(`${innerPad}<h1>${escapeHtml(titleText)}</h1>`);
+          lines.push(
+            `${innerPad}<p>${escapeHtml(descText || 'Start writing your page here. Headings, focus outlines, and motion rules are already wired in.')}</p>`,
+          );
+          lines.push(`${innerPad}<section id="details" aria-labelledby="details-heading">`);
+          lines.push(`${innerPad}${pad}<h2 id="details-heading">Next steps</h2>`);
+          lines.push(`${innerPad}${pad}<p>Replace this placeholder block with your own copy, links, or form controls.</p>`);
+          if (opts.cssMode === 'inline-classless') {
+            lines.push(`${innerPad}${pad}<blockquote><p>Clean semantic HTML stays fast, readable, and easy to maintain.</p></blockquote>`);
+          }
+          lines.push(`${innerPad}</section>`);
+          if (opts.includeArticleWrapper) {
+            lines.push(`${p3}</article>`);
+          }
+          lines.push(`${p2}</main>`);
+
+          if (opts.includeLandmarks) {
+            lines.push(`${p2}<footer>`);
+            lines.push(`${p3}<p>Built with plain HTML5.</p>`);
+            lines.push(`${p2}</footer>`);
+          }
+
+          lines.push(`${pad}</body>`);
+          lines.push('</html>');
+          return lines.join('\n') + '\n';
+        }
+
+        function generateHtmlBoilerplate(partial                              = {})                       {
+          const opts                     = { ...DEFAULT_OPTIONS, ...partial };
+          const warnings           = [];
+
+          const hasInlineCss = opts.cssMode === 'inline-base' || opts.cssMode === 'inline-classless';
+
+          const colorCheck = sanitizeHexColor(opts.accentColor, DEFAULT_ACCENT);
+          if (!colorCheck.valid && opts.accentColor.trim() !== '') {
+            warnings.push(`Accent color "${sanitizeSingleLine(opts.accentColor, 30)}" is not a valid hex value. Using ${DEFAULT_ACCENT}.`);
+          } else if (hasInlineCss) {
+            const lightRatio = contrastRatio(colorCheck.color, LIGHT_BG);
+            if (lightRatio < 4.5) {
+              warnings.push(
+                `Accent color ${colorCheck.color} has ${lightRatio.toFixed(2)}:1 link contrast on the light background (WCAG AA needs 4.5:1). Pick a darker hex for light mode.`,
+              );
+            }
+          }
+
+          const canonicalCheck = sanitizeHttpUrl(opts.canonicalUrl);
+          if ((opts.includeCanonical || opts.includeOpenGraph) && opts.canonicalUrl.trim() !== '' && !canonicalCheck.valid) {
+            warnings.push('Page URL must start with https:// or http://. Omitted until valid.');
+          } else if (
+            (opts.includeCanonical || opts.includeOpenGraph) &&
+            canonicalCheck.valid &&
+            canonicalCheck.url &&
+            isPlaceholderHost(canonicalCheck.url)
+          ) {
+            warnings.push('Page URL still points at example.com. Replace it with your real URL before publishing.');
+          }
+
+          const ogImgCheck = sanitizeHttpUrl(opts.ogImageUrl);
+          if (opts.includeOpenGraph && opts.ogImageUrl.trim() !== '' && !ogImgCheck.valid) {
+            warnings.push('Open Graph image URL must start with https:// or http://. Omitted until valid.');
+          }
+
+          const cssAsset = sanitizeAssetPath(opts.stylesheetHref, DEFAULT_STYLESHEET);
+          if (opts.cssMode === 'linked' && !cssAsset.valid) {
+            warnings.push(`Stylesheet path is not a safe relative path or http(s) URL. Using ${DEFAULT_STYLESHEET}.`);
+          }
+
+          const scriptAsset = sanitizeAssetPath(opts.scriptSrc, DEFAULT_SCRIPT);
+          if (opts.scriptMode !== 'none' && !scriptAsset.valid) {
+            warnings.push(`Script path is not a safe relative path or http(s) URL. Using ${DEFAULT_SCRIPT}.`);
+          }
+
+          const html = renderDocument(
+            opts,
+            colorCheck.color,
+            canonicalCheck.url,
+            ogImgCheck.url,
+            cssAsset.path,
+            scriptAsset.path,
+            false,
+          );
+          const previewHtml = renderDocument(
+            opts,
+            colorCheck.color,
+            canonicalCheck.url,
+            ogImgCheck.url,
+            cssAsset.path,
+            scriptAsset.path,
+            true,
+          );
+
+          let externalAssets = 0;
+          if (opts.cssMode === 'linked') externalAssets += 1;
+          if (opts.scriptMode !== 'none') externalAssets += 1;
+
+          const bytes = new TextEncoder().encode(html).length;
+          const lines = html.split('\n').length - 1;
+
+          const checks               = [
+            { id: 'lang', label: `lang="${sanitizeLang(opts.lang)}"`, ok: true },
+            { id: 'viewport', label: 'Mobile viewport', ok: opts.includeViewport },
+            { id: 'focus-motion', label: 'Focus & motion CSS', ok: hasInlineCss },
+            { id: 'skip', label: 'Skip link', ok: opts.includeSkipLink },
+            { id: 'landmarks', label: 'Landmarks', ok: opts.includeLandmarks },
+            { id: 'self-contained', label: 'No external files', ok: externalAssets === 0 },
+          ];
+
+          return {
+            html,
+            previewHtml,
+            stats: { lines, bytes, externalAssets, checks },
+            warnings,
+          };
+        }
+        return { QUICK_LANGS, DEFAULT_ACCENT, LIGHT_BG, DARK_BG, DEFAULT_STYLESHEET, DEFAULT_SCRIPT, DEFAULT_OPTIONS, PRESETS, getPresetOptions, escapeHtml, sanitizeSingleLine, sanitizeLang, sanitizeHexColor, sanitizeHttpUrl, sanitizeAssetPath, contrastRatio, getDarkAccentText, buildFaviconDataUri, generateHtmlBoilerplate };
+      })();
+      // END GENERATED CORE
+
+        const $ = (id) => document.getElementById(id);
+        const els = {
+          title: $('f-title'),
+          desc: $('f-desc'),
+          lang: $('f-lang'),
+          accent: $('f-accent'),
+          css: $('f-css'),
+          script: $('f-script'),
+          viewport: $('f-viewport'),
+          favicon: $('f-favicon'),
+          skip: $('f-skip'),
+          landmarks: $('f-landmarks'),
+          canonical: $('f-canonical'),
+          og: $('f-og'),
+          article: $('f-article'),
+          comments: $('f-comments'),
+          urlRow: $('url-row'),
+          url: $('f-url'),
+          indent: $('f-indent'),
+          warn: $('warn'),
+          code: $('out-code'),
+          preview: $('out-preview'),
+          status: $('status'),
+        };
+
+        let lastValidAccent = core.DEFAULT_ACCENT;
+        let deferAccentWarn = false;
+
+        function isPartialHexInput(raw) {
+          const trimmed = String(raw).trim();
+          return trimmed.length > 0 && trimmed.length < 7 && /^#[0-9a-fA-F]{0,5}$/.test(trimmed);
+        }
+
+        function readOptions() {
+          return {
+            ...core.DEFAULT_OPTIONS,
+            title: els.title.value,
+            description: els.desc.value,
+            lang: els.lang.value,
+            canonicalUrl: els.url.value,
+            accentColor: els.accent.value,
+            includeViewport: els.viewport.checked,
+            includeFavicon: els.favicon.checked,
+            includeCanonical: els.canonical.checked,
+            includeOpenGraph: els.og.checked,
+            includeSkipLink: els.skip.checked,
+            includeLandmarks: els.landmarks.checked,
+            includeArticleWrapper: els.article.checked,
+            includeComments: els.comments.checked,
+            cssMode: els.css.value,
+            scriptMode: els.script.value,
+            indent: els.indent.value,
+          };
+        }
+
+        function applyPreset(id) {
+          const opts = core.getPresetOptions(id);
+          els.title.value = opts.title;
+          els.desc.value = opts.description;
+          els.lang.value = opts.lang;
+          els.accent.value = opts.accentColor;
+          lastValidAccent = core.sanitizeHexColor(opts.accentColor, core.DEFAULT_ACCENT).color;
+          deferAccentWarn = false;
+          els.url.value = opts.canonicalUrl;
+          els.viewport.checked = opts.includeViewport;
+          els.favicon.checked = opts.includeFavicon;
+          els.canonical.checked = opts.includeCanonical;
+          els.og.checked = opts.includeOpenGraph;
+          els.skip.checked = opts.includeSkipLink;
+          els.landmarks.checked = opts.includeLandmarks;
+          els.article.checked = opts.includeArticleWrapper;
+          els.comments.checked = opts.includeComments;
+          els.css.value = opts.cssMode;
+          els.script.value = opts.scriptMode;
+          els.indent.value = opts.indent;
+        }
+
+        function render() {
+          const opts = readOptions();
+          els.urlRow.hidden = !(opts.includeCanonical || opts.includeOpenGraph);
+          const effectiveOpts =
+            deferAccentWarn && !core.sanitizeHexColor(opts.accentColor, core.DEFAULT_ACCENT).valid
+              ? { ...opts, accentColor: lastValidAccent }
+              : opts;
+          const res = core.generateHtmlBoilerplate(effectiveOpts);
+          els.code.value = res.html;
+          els.preview.srcdoc = res.previewHtml;
+          if (res.warnings.length > 0) {
+            els.warn.hidden = false;
+            els.warn.textContent = res.warnings.join(' ');
+          } else {
+            els.warn.hidden = true;
+            els.warn.textContent = '';
+          }
+        }
+
+        document.querySelectorAll('[data-preset]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const id = btn.dataset.preset;
+            document.querySelectorAll('[data-preset]').forEach((b) => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
+            applyPreset(id);
+            render();
+          });
+        });
+
+        document.querySelectorAll('[data-view]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const isPreview = btn.dataset.view === 'preview';
+            document.querySelectorAll('[data-view]').forEach((b) => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
+            els.code.hidden = isPreview;
+            els.preview.hidden = !isPreview;
+          });
+        });
+
+        els.accent.addEventListener('input', () => {
+          const checked = core.sanitizeHexColor(els.accent.value, core.DEFAULT_ACCENT);
+          if (checked.valid) {
+            lastValidAccent = checked.color;
+            deferAccentWarn = false;
+          } else {
+            deferAccentWarn = isPartialHexInput(els.accent.value);
+          }
+          render();
+        });
+
+        els.accent.addEventListener('blur', () => {
+          if (deferAccentWarn) {
+            deferAccentWarn = false;
+            render();
+          }
+        });
+
+        [els.title, els.desc, els.lang, els.url].forEach((el) => el.addEventListener('input', render));
+        [els.css, els.script, els.viewport, els.favicon, els.skip, els.landmarks, els.canonical, els.og, els.article, els.comments, els.indent].forEach((el) => el.addEventListener('change', render));
+
+        $('btn-copy').addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText(els.code.value);
+            els.status.textContent = 'Copied index.html.';
+          } catch {
+            els.status.textContent = 'Copy blocked. Select the code and press Ctrl+C.';
+          }
+        });
+
+        $('btn-dl').addEventListener('click', () => {
+          const blob = new Blob([els.code.value], { type: 'text/html;charset=utf-8' });
+          const u = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = u;
+          a.download = 'index.html';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          window.setTimeout(() => URL.revokeObjectURL(u), 1000);
+          els.status.textContent = 'Downloaded index.html.';
+        });
+
+        render();
+      })();
+    </script>
+  </body>
+</html>
